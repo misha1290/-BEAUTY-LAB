@@ -16,13 +16,6 @@ const bios = {
             de: 'Ich bin Olena Tarasenko – zertifizierte Lash-Stylistin und Trainerin.\n\nIch verbinde präzise Arbeitstechniken mit einem hohen Qualitätsanspruch und der strikten Einhaltung hygienischer Standards.\n\nHeute arbeite ich mit einem klaren Fokus auf Qualität, Sicherheit und gesunde Naturwimpern. Neben meiner Tätigkeit als Lash-Stylistin gebe ich mein Wissen auch als Trainerin weiter — strukturiert, praxisnah und mit dem Ziel, Sicherheit und Selbstvertrauen zu vermitteln.'
         }
     },
-    'hanna': {
-        name: { ru: 'Ханна Шуст', de: 'Hanna Shust' },
-        text: { 
-            ru: 'Приветствую! Меня зовут Ханна Шуст. Я мастер маникюра и педикюра. Предлагаю профессиональный уход с акцентом на эстетику и здоровье ваших ногтей.\n\nОсобенно важны для меня качество материалов, щадящие методы работы, а также соблюдение высочайших стандартов гигиены и стерилизации. Ваша безопасность и комфорт всегда на первом месте.',
-            de: 'Hallo und herzlich willkommen! Mein Name ist Hanna Shust. Ich bin Nageldesignerin und Fußpflegerin. Ich biete professionelle Maniküre und Pediküre mit Fokus auf Ästhetik und Gesundheit Ihrer Nägel.\n\nBesonders wichtig sind mir die Qualität der Materialien, schonende Arbeitsmethoden sowie die Einhaltung höchster Hygiene- und Sterilisationsstandards. Ihre Sicherheit und Ihr Wohlbefinden stehen immer an erster Stelle.'
-        }
-    },
     'tatjana': {
         name: { ru: 'Татьяна Кравчук', de: 'Tatjana Krawtschuk' },
         text: { 
@@ -120,7 +113,6 @@ const translations = {
         team_title: "Наша Команда", 
         role_founder: "Основатель", name_alla: "Алла Кириленко", quote_alla: '"Истинная красота — это гармония здоровья и уверенности."',
         role_lash: "Лэшмейкер и Тренер", name_olena: "Олена Тарасенко", quote_olena: '"Точность встречается со страстью — для взгляда, который остается в памяти."',
-        role_nail: "Мастер ногтевого сервиса", name_hanna: "Ханна Шуст", quote_hanna: '"Безупречный уход для ваших рук и ног, где эстетика встречается с комфортом."',
         role_tattoo: "Мастер тату и ПМ", name_tatjana: "Татьяна Кравчук", quote_tatjana: '"Искусство на коже, которое рассказывает вашу уникальную историю."',
         loc_tatjana: "Приём клиентов: г. Луцк", btn_bio: "Биография",
         contact_title: "Ваш визит <br>в лабораторию", contact_addr_title: "Адрес студии",
@@ -152,7 +144,6 @@ const translations = {
         team_title: "Unser Team", 
         role_founder: "Gründerin", name_alla: "Alla Kirilenko", quote_alla: '"Wahre Schönheit ist die Harmonie von Gesundheit und Selbstvertrauen."',
         role_lash: "Wimpernstylistin & Trainerin", name_olena: "Olena Tarasenko", quote_olena: '"Präzision trifft auf Leidenschaft — für einen Blick, der in Erinnerung bleibt."',
-        role_nail: "Nageldesignerin", name_hanna: "Hanna Shust", quote_hanna: '"Makellose Pflege für Ihre Hände und Füße, wo Ästhetik auf Komfort trifft."',
         role_tattoo: "Tattoo- und PMU-Künstlerin", name_tatjana: "Tatjana Krawtschuk", quote_tatjana: '"Kunst auf der Haut, die Ihre einzigartige Geschichte erzählt."',
         loc_tatjana: "Kundenempfang: Luzk", btn_bio: "Biografie",
         contact_title: "Ihr Besuch <br>im Labor", contact_addr_title: "Studio-Adresse",
@@ -216,15 +207,13 @@ function clearFormStorage(ids) {
     ids.forEach(id => localStorage.removeItem(id));
 }
 
-// --- TELEGRAM БОТ И МОДАЛЬНОЕ ОКНО УСПЕХА ---
-const TG_TOKEN = '8633789638:AAEBoepk57YgnA_iKOpoI1RKUo4rVzZVpo4';
-const TG_CHAT_ID = '238822778';
+// --- TELEGRAM БОТ---
+const GOOGLE_APP_URL = 'https://script.google.com/macros/s/AKfycby5jlbRll83HZ0BgYp5NtEvWq0fJJUmAoY8UpTWDITy_KtvEwaeTjksl3JWxClXo1Tj/exec'; 
 
 function showSuccessModal() {
     const title = currentLang === 'ru' ? 'Успешно!' : 'Erfolgreich!';
     const text = currentLang === 'ru' ? 'Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.' : 'Ihre Anfrage wurde gesendet. Wir werden uns in Kürze bei Ihnen melden.';
     
-    // Проверяем, есть ли модалка в HTML (чтобы не было ошибки)
     const modalTitle = document.getElementById('successTitle');
     const modalText = document.getElementById('successText');
     const modal = document.getElementById('successModal');
@@ -243,26 +232,28 @@ function closeSuccessModal() {
     if (modal) modal.classList.remove('show');
 }
 
-// Добавляем функцию глобально, если кнопка закрытия вызывает её из HTML
 window.closeSuccessModal = closeSuccessModal;
 
 async function sendToTelegram(message, inputIdsToClear) {
-    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
     try {
-        const response = await fetch(url, {
+        const response = await fetch(GOOGLE_APP_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message, parse_mode: 'HTML' })
+            // Важно: используем text/plain, чтобы избежать проблем с CORS-префлайтами в Google Script
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ message: message })
         });
         
-        if (response.ok) {
+        const result = await response.json();
+        
+        if (result.status === 'success') {
             showSuccessModal();
             clearFormStorage(inputIdsToClear);
         } else {
+            console.error('Ошибка сервера:', result.message);
             alert(currentLang === 'ru' ? 'Ошибка отправки. Попробуйте позже.' : 'Fehler beim Senden. Bitte versuchen Sie es später.');
         }
     } catch (error) {
-        console.error('Ошибка Telegram:', error);
+        console.error('Ошибка сети:', error);
         alert(currentLang === 'ru' ? 'Ошибка сети.' : 'Netzwerkfehler.');
     }
 }
