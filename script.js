@@ -3,7 +3,7 @@ let currentLang = 'ru';
 // --- ДАННЫЕ ДЛЯ БИОГРАФИЙ И ОБУЧЕНИЯ ---
 const bios = {
     'alla': {
-        name: { ru: 'Алла Кириленко', de: 'Alla Kirilenko' },
+        name: { ru: 'Алла Кириленко', de: 'Alla Kyrylenko' },
         text: { 
             ru: 'Основатель Beauty Lab, ведущий косметолог с более чем 10-летним стажем. Специализируется на комплексном омоложении и сложных эстетических протоколах.',
             de: 'Gründerin von Beauty Lab, leitende Kosmetologin mit über 10 Jahren Erfahrung. Spezialisiert auf komplexe Verjüngungsprozesse und fortschrittliche ästhetische Protokolle.'
@@ -142,7 +142,7 @@ const translations = {
         srv_massage: "Massage", srv_massage_desc: "Entspannung und Wiederherstellung der Vitalität.",
         edu_title: "Ausbildung", edu_pmu: "Kurs: Permanent Make-up", edu_tattoo: "Kurs: Kunst-Tattoo",
         team_title: "Unser Team", 
-        role_founder: "Gründerin", name_alla: "Alla Kirilenko", quote_alla: '"Wahre Schönheit ist die Harmonie von Gesundheit und Selbstvertrauen."',
+        role_founder: "Gründerin", name_alla: "Alla Kyrylenko", quote_alla: '"Wahre Schönheit ist die Harmonie von Gesundheit und Selbstvertrauen."',
         role_lash: "Wimpernstylistin & Trainerin", name_olena: "Olena Tarasenko", quote_olena: '"Präzision trifft auf Leidenschaft — für einen Blick, der in Erinnerung bleibt."',
         role_tattoo: "Tattoo- und PMU-Künstlerin", name_tatjana: "Tatjana Krawtschuk", quote_tatjana: '"Kunst auf der Haut, die Ihre einzigartige Geschichte erzählt."',
         loc_tatjana: "Kundenempfang: Luzk", btn_bio: "Biografie",
